@@ -1,4 +1,4 @@
-require('./EmailNotifications.js');
+
 require('./CurrentDayJob.js');
 Parse.Cloud.define('getAllNotificationCounts',function(request,response){
 
