@@ -6,11 +6,11 @@ var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
 
 var api = new ParseServer({
-  databaseURI: 'mongodb://localhost:27017/khatma',
+  databaseURI: 'mongodb://localhost:27017/jugal',
   cloud:  __dirname + '/cloud/main.js',
-  appId:  'khatma',
-  masterKey: 'khatma', //Add your master key here. Keep it secret!
-  serverURL: 'http://localhost:1337/khatma',  // Don't forget to change to https if needed
+  appId:  'jugal',
+  masterKey: 'jugal', //Add your master key here. Keep it secret!
+  serverURL: 'http://localhost:1337/jugal',  // Don't forget to change to https if needed
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
@@ -25,7 +25,7 @@ var app = express();
 app.use('/public', express.static(path.join(__dirname, '/public')));
 
 // Serve the Parse API on the /parse URL prefix
-var mountPath = process.env.PARSE_MOUNT || '/khatma';
+var mountPath = process.env.PARSE_MOUNT || '/jugal';
 app.use(mountPath, api);
 
 // Parse Server plays nicely with the rest of your web routes
