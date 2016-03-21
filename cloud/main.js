@@ -1,4 +1,4 @@
-
+require('./EmailNotifications.js');
 Parse.Cloud.define('getAllNotificationCounts',function(request,response){
 
 	Parse.Cloud.useMasterKey(); //  just in case
