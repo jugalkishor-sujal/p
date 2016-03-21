@@ -1,5 +1,5 @@
 var Mailgun = require('mailgun');
-Mailgun.initialize('sandbox82443.mailgun.org', 'key-2-ekaeg6843ltjanh9tavhfilzha2rg1');//initialize mailgun
+Mailgun.initialize('sandbox82443.mailgun.org', 'key-2-ekaeg6843ltjanh9tavhfilzha2rg1');
 var msgGroup={};
 function EmailWhenKhatmaBegin(GroupID,GroupCreatorName,GroupCreatorID)
 {
