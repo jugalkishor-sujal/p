@@ -1,8 +1,10 @@
-var MG = require('mailgun').Mailgun;
+//var MG = require('mailgun').Mailgun;
 //Mailgun.initialize('sandbox82443.mailgun.org', 'key-2-ekaeg6843ltjanh9tavhfilzha2rg1');
 //var Mailgun = require('mailgun');
-
-var Mailgun = new MG('key-2-ekaeg6843ltjanh9tavhfilzha2rg1');
+//var Mailgun = new MG('key-2-ekaeg6843ltjanh9tavhfilzha2rg1');
+var api_key = 'key-2-ekaeg6843ltjanh9tavhfilzha2rg1';
+var domain = 'sandbox82443.mailgun.org';
+var Mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
 var msgGroup={};
 function EmailWhenKhatmaBegin(GroupID,GroupCreatorName,GroupCreatorID)
@@ -26,17 +28,10 @@ function EmailWhenKhatmaBegin(GroupID,GroupCreatorName,GroupCreatorID)
 									msgGroup.subject='Khatma '+ResultGroupUser.get("GroupName")+' has begun! ';
 									//msgGroup.html='<h3>Al-Salamu Alaikum '+ResultGroupUser.get("FullName")+'</h3><p>Great, '+ResultGroupUser.get("GroupName")+' Khatma has begun, now your can see your recitations assigned to you under the MY RECITATIONS tab and your can see everyone\'s under the ALL RECITATIONS tab. Every day when you complete a daily full recitation, check it off in the app, this will help you see how far along the Khatma is to completion of the Holy Quran.</p><br><p>If you miss a daily recitation or recite a future daily recitation you can always check those off as well at a later time. If you all complete your recitations sooner than planned everybody wins and you can start a new Khatma sooner! </p><br><a href="http://khatma.thedemo.co">Join the Khatma group by Signing up OR Logging in</a> <br>Fee Aman Allah<br><br>';
 									msgGroup.html='<head><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" rel="stylesheet" type="text/css"></head><body bgcolor="#FFFFFF" style="padding: 0;margin: 0;"><table class="head-wrap" bgcolor="#f4edd4" style="width: 100%;font-family: Open Sans" cellspacing="0" cellpadding="0"><tr><td></td><td class="header container"><table bgcolor="#f4edd4" style="padding: 15px;width: 600px;margin: 0 auto;"><tr><td><img src="http://khatma.thedemo.co/KhatmaApp/www/img/email_logo.png"/></td><td align="right"><h6 class="collapse" style="margin: 0;font-weight: 500;font-size: 14px;text-transform: uppercase;color: #444;"><a href="http://khatma.thedemo.co" style="color: #444;text-decoration:none;">khatma.thedemo.co</a></h6></td></tr></table></td><td></td></tr></table><table cellspacing="0" cellpadding="0" style="width: 100%;font-family: Open Sans"><tr><td></td><td class="container" bgcolor="#FFFFFF"><table style="padding: 15px;width: 600px;margin: 0 auto;"><tr><td><h3 style="padding-top: 20px;font-weight: 500;font-size: 27px;line-height: 1.1;margin-bottom: 15px;margin-top:0;color: #000;">Al-Salamu Alaikum <u>'+ResultGroupUser.get("FullName")+'</u></h3><p style="font-size: 17px;padding-top: 20px;padding-bottom: 20px;margin-top: 0;margin-bottom: 10px;line-height: 1.6;">Great, <u>'+ResultGroupUser.get("GroupName")+'</u> Khatma has begun, now your can see yourrecitations assigned to you under the MY RECITATIONS tab and your can see everyone\'s underthe ALL RECITATIONS tab. Every day when you complete a daily full recitation, check it offin the app, this will help you see how far along the Khatma is to completion of the HolyQuran.</p><p style="margin-bottom: 10px;font-weight: normal;font-size: 14px;line-height: 1.6;">If you missa daily recitation or recite a future daily recitation you can always check those off aswell at a later time. If you all complete your recitations sooner than planned everybodywins and you can start a new Khatma sooner!<br/><br/></p><a href="http://khatma.thedemo.co" style="display: block; width: 100%; text-decoration: none; padding: 15px;background-color: #3c8f42;margin-bottom: 0;color: #FFFFFF;font-weight: normal;font-size: 14px;line-height: 1.6;margin-top: 0"><span style="font-weight: bold;color: #d6bd47;text-decoration: underline">LOG IN</span> andsee your recitations and how everyone else is doing</a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" style="width: 100%; font-family: Open Sans"><tr><td></td><td class="container"><table style="padding: 15px;width: 600px;margin: 0 auto;"><tr><td align="center"><pstyle="margin-bottom: 10px;font-weight: normal;font-size: 14px;line-height: 1.6;margin-top: 0;"><a href="#" style="color: #2BA6CB;">Terms</a> | <a href="#" style="color: #2BA6CB;">Privacy</a></p></td></tr></table></td><td></td></tr></table></body>';
-									Mailgun.sendText(msgGroup,
-										{
-											success: function(httpResponse)
-												{
-													
-												},
-												error: function(error) 
-												{
-													console.log('sendEmail error'+JSON.stringify(error));
-												}
-										});	
+									Mailgun.messages().send(msgGroup,
+										 function (error, body) {
+  											console.log(body);
+									});	
 								}
                         	}
                         },
@@ -102,17 +97,11 @@ function EmailWhenKhatmaComplete(GroupID,GroupCreatorName,GroupCreatorID)
 									msgGroup.subject='Khatma '+ResultGroupUser.get("GroupName")+' has been completed ';
 									//msgGroup.html='<h3>Al-Salamu Alaikum '+ResultGroupUser.get("FullName")+'</h3><p>Congratulations! you have completed the recitation of the Holy Quran. Make sure you make your intention (niyya\'s) if you wish to gift the rewards of this Khatma to your loved ones! You can start a new khatma with your friends once again and multiply your rewards! </p><br><a href="http://khatma.thedemo.co">Join the Khatma group by Signing up OR Logging in</a> <br>Fee Aman Allah<br><br>';
 									msgGroup.html='<head> <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" rel="stylesheet" type="text/css"></head><body bgcolor="#FFFFFF" style="padding: 0;margin: 0;"><table class="head-wrap" bgcolor="#f4edd4" style="width: 100%;font-family: Open Sans" cellspacing="0" cellpadding="0"> <tr> <td></td><td class="header container"> <table bgcolor="#f4edd4" style="padding: 15px;width: 600px;margin: 0 auto;"> <tr> <td><img src="http://khatma.thedemo.co/KhatmaApp/www/img/email_logo.png"/></td><td align="right"><h6 class="collapse" style="margin: 0;font-weight: 500;font-size: 14px;text-transform: uppercase;color: #444;"> <a href="http://khatma.thedemo.co" style="color:#444;text-decoration:none">khatma.thedemo.co</a> </h6></td></tr></table> </td><td></td></tr></table><table cellspacing="0" cellpadding="0" style="width: 100%;font-family: Open Sans"> <tr> <td></td><td class="container" bgcolor="#FFFFFF"> <table style="padding: 15px;width: 600px;margin: 0 auto;"> <tr> <td> <h3 style="padding-top: 20px;font-weight: 500;font-size: 27px;line-height: 1.1;margin-bottom: 15px;margin-top:0;color: #000;"> Al-Salamu Alaikum <u>'+ResultGroupUser.get("FullName")+'</u></h3> <p style="font-size: 17px;padding-top: 20px;padding-bottom: 20px;margin-top: 0;margin-bottom: 10px;line-height: 1.6;"> Congratulations! You have completed the recitation of the Holy Quran. Make sure you make your intention (niyya\'s) if you wish to gift the rewards of this Khatma to your loved ones! You can start a new khatma with your friends once again and multiply your rewards! <br/></p><a href="http://khatma.thedemo.co" style="width:100%;display: block;text-decoration:none;padding: 15px;background-color: #3c8f42;margin-bottom: 0;color: #FFFFFF;font-weight: normal;font-size: 14px;line-height: 1.6;margin-top: 0"> <span style="font-weight: bold;color: #d6bd47;text-decoration: underline">LOG IN</span> now and create a new group.</a></td></tr></table> </td></tr></table><table cellpadding="0" cellspacing="0" style="width: 100%; font-family: Open Sans"> <tr> <td></td><td class="container"> <table style="padding: 15px;width: 600px;margin: 0 auto;"> <tr> <td align="center"><p style="margin-bottom: 10px;font-weight: normal;font-size: 14px;line-height: 1.6;margin-top: 0;"> <a href="#" style="color: #2BA6CB;">Terms</a> |<a href="#" style="color: #2BA6CB;">Privacy</a> </p></td></tr></table> </td><td></td></tr></table></body>';
-									Mailgun.sendText(msgGroup,
-										{
-											success: function(httpResponse)
-												{
-													GROUP_COMPLETED(GroupID,ResultGroupUser.get("GroupName"),ResultGroupUser.get("UserID"),GroupCreatorName);
-												},
-												error: function(error) 
-												{
-													console.log('sendEmail error'+JSON.stringify(error));
-												}
-										});	
+									Mailgun.messages().send(msgGroup,
+										 function (error, body) {
+  											console.log(body);
+									});
+									GROUP_COMPLETED(GroupID,ResultGroupUser.get("GroupName"),ResultGroupUser.get("UserID"),GroupCreatorName);
 								}
                         	}
                         },
@@ -450,10 +439,10 @@ Parse.Cloud.afterSave("GroupUsers",function(request)
 					//msgGroup.html='<h3>Al-Salamu Alaikum</h3><br><p>You have been invited to join a Khatma Group to complete a full recitation of the Holy Quran using the Khatma App.</p><br><p>This app will portion the Holy Quran equally amongst your group members then assign it daily so you can recite and reap the rewards of Completing the Holy Quran more frequently.</p><p>The Messenger of Allah (prayers of Allah be upon him and his family) has said: These hearts rust just as iron rusts; and indeed they are polished through the recitation of the Qurâ€™an.</p><br><p>Khatma app is the only app that intuitively helps muslims collaborate together to read the Holy Quran daily. Now you can earn and gift the rewards (thawab/hassanat) of Cover to Cover Holy Quran recitation many times over throughout the year</p><br><a href="http://khatma.thedemo.co">Join the Khatma group by Signing up OR Logging in</a> <br>Fee Aman Allah<br><br>';
 					msgGroup.html='<head> <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,700italic,400italic" rel="stylesheet" type="text/css"></head><body bgcolor="#FFFFFF" style="padding: 0;margin: 0;"><table class="head-wrap" bgcolor="#f4edd4" style="width: 100%;font-family: Open Sans" cellspacing="0" cellpadding="0"> <tr> <td></td><td class="header container"> <table bgcolor="#f4edd4" style="padding: 15px;width: 600px;margin: 0 auto;"> <tr> <td><img src="http://khatma.thedemo.co/KhatmaApp/www/img/email_logo.png"/></td><td align="right"><h6 class="collapse" style="margin: 0;font-weight: 500;font-size: 14px;text-transform: uppercase;color: #444;"> <a href="http://khatma.thedemo.co" style="color:#444;text-decoration:none;">khatma.thedemo.co</a></h6></td></tr></table> </td><td></td></tr></table><table cellspacing="0" cellpadding="0" style="width: 100%;font-family: Open Sans"> <tr> <td></td><td class="container" bgcolor="#FFFFFF"> <table style="padding: 15px;width: 600px;margin: 0 auto;"> <tr> <td> <h3 style="padding-top: 20px;font-weight: 500;font-size: 27px;line-height: 1.1;margin-bottom: 15px;margin-top:0;color: #000;"> Al-Salamu Alaikum <u>'+FullName+'</u></h3> <p style="font-size: 17px;padding-top: 20px;padding-bottom: 20px;margin-top: 0;margin-bottom: 10px;line-height: 1.6;"> You have been invited to join a Khatma Group <u>'+GroupName+'</u> to complete a full recitation of the Holy Quran using the Khatma App.</p><p style="margin-bottom: 10px;font-weight: normal;font-size: 14px;line-height: 1.6;"> This app will portion the Holy Quran equally amongst your group members then assign it daily so you can recite and reap the rewards of Completing the Holy Quran more frequently. The Messenger of Allah (prayers of Allah be upon him and his family) has said: <br/><br/><strong>"These hearts rust just as iron rusts; and indeed they are polished through the recitation of the Qur’an."</strong><br/><br/></p><p style="margin-bottom: 10px;font-weight: normal;font-size: 14px;line-height: 1.6;">Khatma app is the only app that intuitively helps muslims collaborate together to read the Holy Quran daily. Now you can earn and gift the rewards (thawab/hassanat) of Cover to Cover Holy Quran recitation many times over throughout the year<br/><br/></p><a href="http://khatma.thedemo.co/" style="display:block;text-decoration: none; width: 100%; padding: 15px;background-color: #3c8f42;margin-bottom: 0;color: #FFFFFF;font-weight: normal;font-size: 14px;line-height: 1.6;"> Join the Khatma group by <span style="text-decoration: underline;font-weight: bold;color: #d6bd47;">SIGNING UP</span> OR <span style="font-weight: bold;color: #d6bd47;text-decoration: underline">LOGGING IN</span></a></td></tr></table> </td></tr></table><table cellpadding="0" cellspacing="0" style="width: 100%; font-family: Open Sans"> <tr> <td></td><td class="container"> <table style="padding: 15px;width: 600px;margin: 0 auto;"> <tr> <td align="center"><p style="margin-bottom: 10px;font-weight: normal;font-size: 14px;line-height: 1.6;margin-top: 0"> <a href="#" style="color: #2BA6CB;">Terms</a> |<a href="#" style="color: #2BA6CB;">Privacy</a> </p></td></tr></table> </td><td></td></tr></table></body>';
 				}
-			Mailgun.sendText(msgGroup, 
-				{
-					success: function(httpResponse)
-						{
+		Mailgun.messages().send(msgGroup,
+			function (error, body) {
+  				console.log(body);
+			});
 							var Users = Parse.Object.extend("_User");
 							var QueryUser = new Parse.Query(Users);
 							QueryUser.equalTo('email', email);
@@ -506,12 +495,6 @@ Parse.Cloud.afterSave("GroupUsers",function(request)
 													console.log('AppUser error'+JSON.stringify(error));
 												}
 										 });
-						},
-					error: function(error) 
-						{
-							console.log('sendEmail error'+JSON.stringify(error));
-						}
-				});			
 		}
 });
 Parse.Cloud.afterDelete("GroupUsers",function(request) 
