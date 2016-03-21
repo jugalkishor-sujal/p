@@ -5,18 +5,12 @@ var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
 
-var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI;
-
-if (!databaseUri) {
-  console.log('DATABASE_URI not specified, falling back to localhost.');
-}
-
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://localhost:27017/parse',
-  cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'EwDTpTzNekoca5yA7VUW6I6gdbS2Y4sOBJ2NitMq',
-  masterKey: process.env.MASTER_KEY || 'RPeBFIVkZpWymj2fuX0jAYXELbDmIe3GV7UILxoR', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/khatma',  // Don't forget to change to https if needed
+  databaseURI: 'mongodb://localhost:27017/khatma',
+  cloud:  __dirname + '/cloud/main.js',
+  appId:  'khatma',
+  masterKey: 'khatma', //Add your master key here. Keep it secret!
+  serverURL: 'http://localhost:1337/khatma',  // Don't forget to change to https if needed
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
