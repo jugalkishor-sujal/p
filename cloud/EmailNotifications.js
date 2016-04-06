@@ -133,6 +133,8 @@ function GROUP_CREATED(GroupID,GroupCreatorName)
 							            newNoti.set('type','GROUP_CREATED');
             							newNoti.set('GroupID',GroupID);       
 							            newNoti.set('targetId',targetId);
+								    newNoti.set('FullName',GroupCreatorName);
+							            newNoti.set('GroupName',GroupName);
 							            newNoti.set('description',GroupName+' Khatma created by '+GroupCreatorName);
 							            newNoti.set('read',false);
 							            newNoti.save(null,{
@@ -161,6 +163,8 @@ function GROUP_CREATED_BY_USER(GroupID,GroupName,GroupCreatorName,targetId)
 							            newNoti.set('type','GROUP_CREATED');
             							newNoti.set('GroupID',GroupID);       
 							            newNoti.set('targetId',targetId);
+							            newNoti.set('FullName',GroupCreatorName);
+							            newNoti.set('GroupName',GroupName);
 							            newNoti.set('description',GroupName+' Khatma created by '+GroupCreatorName);
 							            newNoti.set('read',false);
 							            newNoti.save(null,{
@@ -196,7 +200,9 @@ function GROUP_DELETED(GroupID,GroupCreatorName)
 							            var newNoti = new Noti();
 							            newNoti.set('type','GROUP_DELETED');
             							newNoti.set('GroupID',GroupID);       
-							            newNoti.set('targetId',targetId);
+							            newNoti.set('targetId',targetId);							            
+							            newNoti.set('FullName',GroupCreatorName);
+							            newNoti.set('GroupName',GroupName);
 							            newNoti.set('description',GroupName+' Khatma cancelled by '+GroupCreatorName);
 							            newNoti.set('read',false);
 							            newNoti.save(null,{
@@ -240,7 +246,9 @@ function GROUP_INPROGRESS(GroupID,GroupCreatorName)
 							            var newNoti = new Noti();
 							            newNoti.set('type','GROUP_INPROGRESS');
             							newNoti.set('GroupID',GroupID);       
-							            newNoti.set('targetId',targetId);
+							            newNoti.set('targetId',targetId);							            
+							            newNoti.set('FullName',GroupCreatorName);
+							            newNoti.set('GroupName',GroupName);
 							            newNoti.set('description',GroupName+' Khatma is now progress');
 							            newNoti.set('read',false);
 							            newNoti.save(null,{
@@ -309,7 +317,9 @@ function GROUP_COMPLETED(GroupID,GroupCreatorName)
 							            var newNoti = new Noti();
 							            newNoti.set('type','GROUP_COMPLETED');
             							newNoti.set('GroupID',GroupID);       
-							            newNoti.set('targetId',targetId);
+							            newNoti.set('targetId',targetId);							            
+							            newNoti.set('FullName',GroupCreatorName);
+							            newNoti.set('GroupName',GroupName);
 							            newNoti.set('description',GroupName+' Khatma is completed');
 							            newNoti.set('read',false);
 							            newNoti.save(null,{
@@ -627,6 +637,53 @@ function UPDATE_PERCENT(GroupID,Value)
                         }
                     });
 };
+function GROUP_RECITATION_COMPLETED(GroupID,Value)
+    {
+    var GroupUsers = Parse.Object.extend("GroupUsers");
+	var QueryGroupUsers = new Parse.Query(GroupUsers);
+	QueryGroupUsers.equalTo('GroupID', GroupID);
+	QueryGroupUsers.containedIn('JoiningStatus', [2,4]);
+	QueryGroupUsers.find(
+		{
+			success: function(ResultGroupUsers)
+				{
+					if(ResultGroupUsers.length>0)
+						{
+							for(var i=0;i<ResultGroupUsers.length;i++)
+								{
+									var ResultGroupUser=ResultGroupUsers[i];
+									var targetId=ResultGroupUser.get("UserID");
+									var GroupName=ResultGroupUser.get("GroupName");
+
+							    if(targetId!=='')
+								    {
+								    	var Noti = Parse.Object.extend('Notification');
+							            var newNoti = new Noti();
+							            newNoti.set('type','GROUP_RECITATION_COMPLETED'+Value);
+							            newNoti.set('GroupID',GroupID); 
+							            newNoti.set('targetId',targetId);							            
+							            //newNoti.set('FullName',GroupCreatorName);
+							            newNoti.set('GroupName',GroupName);
+							            newNoti.set('description',Value+'% Complete for '+GroupName);
+							            newNoti.set('read',false);
+							            newNoti.save(null,{
+							                success: function(newNoti)
+							                {
+							                },
+							                error: function(error)
+							                {console.log('Notification Saving error'+JSON.stringify(error));
+							                }
+							            });
+							        }
+								}
+						}
+				},
+			error: function(error) 
+				{
+					console.log('ResultGroupUsers error'+JSON.stringify(error));
+				}
+		});
+    };
 Parse.Cloud.afterSave("DivisionsAssignments",function(request)
 {
 	var createdAt = request.object.get("createdAt");
